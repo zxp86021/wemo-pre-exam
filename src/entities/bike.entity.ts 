@@ -1,0 +1,16 @@
+import { Entity, Column, PrimaryColumn } from 'typeorm';
+
+@Entity()
+export class Bike {
+  @PrimaryColumn()
+  licensePlateNumber: string;
+
+  @Column('decimal', { precision: 9, scale: 2, default: 0 })
+  mileage: number;
+
+  @Column()
+  brand: string;
+
+  @Column({ default: true })
+  isActive: boolean;
+}

@@ -8,8 +8,7 @@ async function bootstrap() {
   const options = new DocumentBuilder()
     .setTitle('WeMo Pre-Exam')
     .setDescription('The Pre-Exam of WeMo')
-    .setVersion('1.0')
-    .addTag('WeMo')
+    .setVersion('0.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
