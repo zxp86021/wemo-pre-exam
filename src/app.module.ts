@@ -3,13 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BikesController } from './bikes/bikes.controller';
 import { BikesService } from './bikes/bikes.service';
-import { TypeOrmModule} from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(),
-  ],
+  imports: [TypeOrmModule.forRoot()],
   controllers: [AppController, BikesController],
   providers: [AppService, BikesService],
 })

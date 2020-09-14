@@ -5,12 +5,12 @@ export class Bike {
   @PrimaryColumn()
   licensePlateNumber: string;
 
-  @Column('decimal', { precision: 9, scale: 2, default: 0 })
+  @Column()
   mileage: number;
 
   @Column()
   brand: string;
 
-  @Column({ default: true })
+  @Column()
   isActive: boolean;
 }

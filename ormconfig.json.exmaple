@@ -6,14 +6,14 @@
   "password": "root",
   "database": "wemo",
   "entities": [
-    "dist/**/*.entity{.ts,.js}"
+    "dist/database/entities/*.entity{.ts,.js}"
   ],
   "migrations": [
     "src/database/migrations/*{.ts,.js}"
   ],
   "cli": {
     "migrationsDir": "src/database/migrations",
-    "entitiesDir": "src/entities"
+    "entitiesDir": "src/database/entities"
   },
   "synchronize": true
 }
