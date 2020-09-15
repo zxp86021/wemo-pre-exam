@@ -8,7 +8,7 @@ import {
   Put,
   Param,
   Delete,
-  HttpCode,
+  HttpCode, HttpException, HttpStatus,
 } from '@nestjs/common';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
 import { BikesService } from './bikes.service';
@@ -18,17 +18,19 @@ export class BikesController {
   constructor(private serv: BikesService) {}
 
   @Get()
-  //public async getAll() {
-  //  return await this.serv.getAll();
-  //}
   async findAll() {
     return await this.serv.findAll();
-    //return `This action returns all bikes`;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return `This action returns a #${id} bike`;
+  @Get(':licensePlateNumber')
+  async findOne(@Param('licensePlateNumber') licensePlateNumber: string) {
+    const bike = await this.serv.findOne(licensePlateNumber);
+    if (bike === undefined) {
+      throw new HttpException({
+        error: 'License Plate Number Not Exist!',
+      }, HttpStatus.NOT_FOUND)
+    }
+    return bike;
   }
 
   @Post()

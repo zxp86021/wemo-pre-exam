@@ -5,7 +5,7 @@ export class Bike {
   @PrimaryColumn()
   licensePlateNumber: string;
 
-  @Column()
+  @Column('decimal', { precision: 8, scale: 2, default: 0 })
   mileage: number;
 
   @Column()
