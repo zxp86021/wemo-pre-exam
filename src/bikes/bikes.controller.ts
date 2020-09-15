@@ -11,12 +11,19 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
+import { BikesService } from './bikes.service';
 
 @Controller('bikes')
 export class BikesController {
+  constructor(private serv: BikesService) {}
+
   @Get()
-  findAll(@Query() query) {
-    return `This action returns all bikes`;
+  //public async getAll() {
+  //  return await this.serv.getAll();
+  //}
+  async findAll() {
+    return await this.serv.findAll();
+    //return `This action returns all bikes`;
   }
 
   @Get(':id')

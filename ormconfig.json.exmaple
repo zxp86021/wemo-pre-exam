@@ -9,7 +9,7 @@
     "dist/database/entities/*.entity{.ts,.js}"
   ],
   "migrations": [
-    "src/database/migrations/*{.ts,.js}"
+    "dist/database/migrations/*{.ts,.js}"
   ],
   "cli": {
     "migrationsDir": "src/database/migrations",

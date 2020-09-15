@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity('bikes')
 export class Bike {
   @PrimaryColumn()
   licensePlateNumber: string;
@@ -11,6 +11,6 @@ export class Bike {
   @Column()
   brand: string;
 
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 }
