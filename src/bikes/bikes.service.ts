@@ -25,15 +25,17 @@ export class BikesService {
       q.andWhere('mileage < :mileage', { mileage: query.mileage_lt });
     }
     if (query.is_active) {
+      let boolActive;
+
       if (query.is_active === 'true') {
-        q.andWhere('isActive = :isActive', { isActive: true });
+        boolActive = true;
       } else if (query.is_active === 'false') {
-        q.andWhere('isActive = :isActive', { isActive: false });
+        boolActive = false;
       } else {
-        q.andWhere('isActive = :isActive', {
-          isActive: Boolean(query.is_active),
-        });
+        boolActive = Boolean(query.is_active);
       }
+
+      q.andWhere('isActive = :isActive', { isActive: boolActive });
     }
 
     return q.getMany();
