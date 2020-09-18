@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { validate } from 'class-validator';
 import { Bike } from '../database/entities/bike.entity';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
 import { UpdateBikeDto } from '../DTO/update-bike.dto';
@@ -31,7 +30,10 @@ export class BikesService {
     return this.bikeRepository.save(bike);
   }
 
-  update(licensePlateNumber: string, updateBikeDto: UpdateBikeDto): Promise<Bike> {
+  update(
+    licensePlateNumber: string,
+    updateBikeDto: UpdateBikeDto,
+  ): Promise<Bike> {
     const bike = new UpdateBikeDto();
     bike.mileage = updateBikeDto.mileage;
     bike.isActive = updateBikeDto.isActive;
