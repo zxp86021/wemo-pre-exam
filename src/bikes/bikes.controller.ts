@@ -11,6 +11,7 @@ import {
   HttpCode, HttpException, HttpStatus,
 } from '@nestjs/common';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
+import { UpdateBikeDto } from '../DTO/update-bike.dto';
 import { BikesService } from './bikes.service';
 
 @Controller('bikes')
@@ -35,19 +36,18 @@ export class BikesController {
 
   @Post()
   @HttpCode(201)
-  create(@Body() createBikeDto: CreateBikeDto) {
-    return `This action will add a new bike`;
+  async create(@Body() bike: CreateBikeDto) {
+    return await this.serv.create(bike);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string) {
-    //@Body() updateCatDto: UpdateCatDto
-    return `This action updates a #${id} bike`;
+  @Put(':licensePlateNumber')
+  async update(@Param('licensePlateNumber') licensePlateNumber: string, @Body() bike: UpdateBikeDto) {
+    return await this.serv.update(licensePlateNumber, bike);
   }
 
-  @Delete(':id')
+  @Delete(':licensePlateNumber')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    return `This action removes a #${id} bike`;
+  remove(@Param('licensePlateNumber') licensePlateNumber: string) {
+    this.serv.remove(licensePlateNumber);
   }
 }
