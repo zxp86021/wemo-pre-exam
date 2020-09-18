@@ -12,8 +12,31 @@ export class BikesService {
     private bikeRepository: Repository<Bike>,
   ) {}
 
-  findAll(): Promise<Bike[]> {
-    return this.bikeRepository.find();
+  findAll(query): Promise<Bike[]> {
+    const q = this.bikeRepository.createQueryBuilder();
+
+    if (query.brand) {
+      q.andWhere('brand = :brand', { brand: query.brand });
+    }
+    if (query.mileage_gt) {
+      q.andWhere('mileage > :mileage', { mileage: query.mileage_gt });
+    }
+    if (query.mileage_lt) {
+      q.andWhere('mileage < :mileage', { mileage: query.mileage_lt });
+    }
+    if (query.is_active) {
+      if (query.is_active === 'true') {
+        q.andWhere('isActive = :isActive', { isActive: true });
+      } else if (query.is_active === 'false') {
+        q.andWhere('isActive = :isActive', { isActive: false });
+      } else {
+        q.andWhere('isActive = :isActive', {
+          isActive: Boolean(query.is_active),
+        });
+      }
+    }
+
+    return q.getMany();
   }
 
   findOne(licensePlateNumber: string): Promise<Bike> {

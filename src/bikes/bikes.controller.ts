@@ -1,8 +1,8 @@
 import {
   Controller,
   Get,
-  Req,
   Post,
+  Query,
   Body,
   Put,
   Param,
@@ -11,20 +11,25 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
 import { UpdateBikeDto } from '../DTO/update-bike.dto';
 import { BikesService } from './bikes.service';
 
 @Controller('bikes')
+@ApiTags('bikes')
 export class BikesController {
   constructor(private serv: BikesService) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all bikes' })
+  @ApiQuery({ name: 'brand', required: false })
+  @ApiQuery({ name: 'is_active', required: false })
+  @ApiQuery({ name: 'mileage_gt', required: false })
+  @ApiQuery({ name: 'mileage_lt', required: false })
   @ApiResponse({ status: 200, description: 'Success.' })
-  async findAll() {
-    return await this.serv.findAll();
+  async findAll(@Query() query) {
+    return await this.serv.findAll(query);
   }
 
   @Get(':licensePlateNumber')

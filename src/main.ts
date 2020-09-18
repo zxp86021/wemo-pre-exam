@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('WeMo Pre-Exam')
     .setDescription('The Pre-Exam of WeMo')
     .setVersion('0.0.1')
+    .addTag('bikes')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
