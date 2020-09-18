@@ -28,6 +28,11 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Configuration
+
+- copy `ormconfig.json.example` to `ormconfig.json` and filled up with your env variable.
+- Swagger Docs is at `/swagger`
+
 ## Installation
 
 ```bash
