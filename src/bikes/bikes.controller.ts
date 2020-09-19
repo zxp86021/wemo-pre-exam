@@ -64,9 +64,9 @@ export class BikesController {
   @ApiResponse({ status: 400, description: 'Request Validate Failed.' })
   async update(
     @Param('licensePlateNumber') licensePlateNumber: string,
-    @Body() bike: UpdateBikeDto,
+    @Body() bikeParam: UpdateBikeDto,
   ) {
-    return await this.serv.update(licensePlateNumber, bike);
+    return await this.serv.update(licensePlateNumber, bikeParam);
   }
 
   @Delete(':licensePlateNumber')
