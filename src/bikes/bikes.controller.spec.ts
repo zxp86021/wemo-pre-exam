@@ -25,31 +25,36 @@ describe('BikesController', () => {
   });
 
   describe('BikesController', () => {
-    it('should return array of bikes', async () => {
-      // mock file for reuse
-      const testBikes: Bike[] =  [
-        {
-          licensePlateNumber: 'AAA-111',
-          mileage: 0.00,
-          brand: 'K',
-          isActive: true
-        },
-        {
-          licensePlateNumber: 'AQV-1234',
-          mileage: 999.90,
-          brand: 'S',
-          isActive: false
-        },
-        {
-          licensePlateNumber: 'AQV-1235',
-          mileage: 100.00,
-          brand: 'S',
-          isActive: false
-        }
-      ];
-      // notice we are pulling the repo variable and using jest.spyOn with no issues
+    // mock file for reuse
+    const testBikes: Bike[] =  [
+      {
+        licensePlateNumber: 'AAA-111',
+        mileage: 0.00,
+        brand: 'K',
+        isActive: true
+      },
+      {
+        licensePlateNumber: 'AQV-1234',
+        mileage: 999.90,
+        brand: 'S',
+        isActive: false
+      },
+      {
+        licensePlateNumber: 'AQV-1235',
+        mileage: 100.00,
+        brand: 'S',
+        isActive: false
+      }
+    ];
+
+    it('findAll: should return array of bikes', async () => {
       jest.spyOn(service, 'findAll').mockResolvedValueOnce(testBikes);
       expect(await service.findAll({})).toEqual(testBikes);
+    });
+
+    it('findOne: should return a bike', async () => {
+      jest.spyOn(service, 'findOne').mockResolvedValueOnce(testBikes[0]);
+      expect(await service.findOne('AAA-111')).toEqual(testBikes[0]);
     });
   });
 });
