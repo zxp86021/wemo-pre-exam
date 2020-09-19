@@ -7,10 +7,8 @@ import { Repository } from 'typeorm';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
 import { UpdateBikeDto } from '../DTO/update-bike.dto';
 
-describe('BikesController', () => {
-  let controller: BikesController;
+describe('BikesService', () => {
   let service: BikesService;
-  let repo: Repository<Bike>
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,9 +19,7 @@ describe('BikesController', () => {
       }],
     }).compile();
 
-    controller = module.get<BikesController>(BikesController);
     service = module.get<BikesService>(BikesService);
-    repo = module.get<Repository<Bike>>(getRepositoryToken(Bike));
   });
 
   describe('BikesController', () => {
