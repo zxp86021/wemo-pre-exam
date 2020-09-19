@@ -5,6 +5,7 @@
   "username": "root",
   "password": "root",
   "database": "wemo",
+  "bigNumberStrings": false,
   "entities": [
     "dist/database/entities/*.entity{.ts,.js}"
   ],
