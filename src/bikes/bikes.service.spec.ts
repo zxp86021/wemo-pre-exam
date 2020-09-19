@@ -3,12 +3,13 @@ import { BikesController } from './bikes.controller';
 import { BikesService } from './bikes.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Bike } from '../database/entities/bike.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
 import { UpdateBikeDto } from '../DTO/update-bike.dto';
 
 describe('BikesService', () => {
   let service: BikesService;
+  let repo: Repository<Bike>
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,6 +21,7 @@ describe('BikesService', () => {
     }).compile();
 
     service = module.get<BikesService>(BikesService);
+    repo = module.get<Repository<Bike>>(getRepositoryToken(Bike));
   });
 
   describe('BikesController', () => {
@@ -46,13 +48,13 @@ describe('BikesService', () => {
     ];
 
     it('findAll: should return array of bikes', async () => {
-      jest.spyOn(service, 'findAll').mockResolvedValueOnce(testBikes);
-      expect(await service.findAll({})).toEqual(testBikes);
+      jest.spyOn(repo, 'find').mockResolvedValueOnce(testBikes);
+      expect(await service.findAll({})).toBe(testBikes);
     });
 
     it('findOne: should return a bike', async () => {
-      jest.spyOn(service, 'findOne').mockResolvedValueOnce(testBikes[0]);
-      expect(await service.findOne('AAA-111')).toEqual(testBikes[0]);
+      jest.spyOn(repo, 'findOne').mockResolvedValueOnce(testBikes[0]);
+      expect(await service.findOne('AAA-111')).toBe(testBikes[0]);
     });
 
     it('create: should add a new bike', async () => {
@@ -62,8 +64,8 @@ describe('BikesService', () => {
         brand: 'test',
         isActive: false
       };
-      jest.spyOn(service, 'create').mockResolvedValue(params);
-      expect(await service.create(params)).toEqual(params);
+      jest.spyOn(repo, 'save').mockResolvedValue(params);
+      expect(await service.create(params)).toBe(params);
     });
 
     it('update: should return a updated bike', async () => {
@@ -86,8 +88,9 @@ describe('BikesService', () => {
         isActive: true
       };
 
-      jest.spyOn(service, 'update').mockResolvedValue(updatedBike);
-      expect(await service.update(originBike.licensePlateNumber, params)).toEqual(updatedBike);
+      jest.spyOn(repo, 'update').mockResolvedValue(new UpdateResult());
+      jest.spyOn(repo, 'findOne').mockResolvedValue(updatedBike);
+      expect(await service.update(originBike.licensePlateNumber, params)).toBe(updatedBike);
     });
   });
 });
