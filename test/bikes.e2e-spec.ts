@@ -132,6 +132,26 @@ describe('BikesController (e2e)', () => {
       .expect(updatedBike);
   });
 
+  it('PUT Request Validate Failed /bikes/{licensePlateNumber}', async () => {
+    const params: UpdateBikeDto = {
+      mileage: -199.99,
+      isActive: true
+    };
+
+    const updatedBike: Bike = {
+      licensePlateNumber: 'AQV-1235',
+      mileage: -199.99,
+      brand: 'S',
+      isActive: true
+    };
+
+    return request(app.getHttpServer())
+      .put(`/bikes/${updatedBike.licensePlateNumber}`)
+      .set('Accept', 'application/json')
+      .send(params)
+      .expect(400);
+  });
+
   it('DELETE /bikes/{licensePlateNumber}', async () => {
     jest.spyOn(service, 'remove').mockResolvedValueOnce();
     return request(app.getHttpServer())
