@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Equal, LessThan, MoreThan, Repository } from 'typeorm';
 import { Bike } from '../database/entities/bike.entity';
 import { CreateBikeDto } from '../DTO/create-bike.dto';
 import { UpdateBikeDto } from '../DTO/update-bike.dto';
@@ -13,16 +13,16 @@ export class BikesService {
   ) {}
 
   findAll(query): Promise<Bike[]> {
-    const q = this.bikeRepository.createQueryBuilder();
+    const findCondition = {};
 
     if (query.brand) {
-      q.andWhere('brand = :brand', { brand: query.brand });
+      findCondition['brand'] = Equal(query.brand);
     }
     if (query.mileage_gt) {
-      q.andWhere('mileage > :mileage', { mileage: query.mileage_gt });
+      findCondition['mileage'] = MoreThan(query.mileage_gt);
     }
     if (query.mileage_lt) {
-      q.andWhere('mileage < :mileage', { mileage: query.mileage_lt });
+      findCondition['mileage'] = LessThan(query.mileage_lt);
     }
     if (query.is_active) {
       let boolActive;
@@ -35,10 +35,12 @@ export class BikesService {
         boolActive = Boolean(query.is_active);
       }
 
-      q.andWhere('isActive = :isActive', { isActive: boolActive });
+      findCondition['isActive'] = Equal(boolActive);
     }
 
-    return q.getMany();
+    console.log(findCondition);
+
+    return this.bikeRepository.find(findCondition);
   }
 
   findOne(licensePlateNumber: string): Promise<Bike> {
