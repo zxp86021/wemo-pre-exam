@@ -5,7 +5,7 @@ import { BikesController } from '../src/bikes/bikes.controller';
 import { BikesService } from '../src/bikes/bikes.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Bike } from '../src/database/entities/bike.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CreateBikeDto } from '../src/DTO/create-bike.dto';
 import { UpdateBikeDto } from '../src/DTO/update-bike.dto';
 
@@ -53,7 +53,7 @@ describe('BikesController (e2e)', () => {
   ];
 
   it('GET /bikes', async () => {
-    jest.spyOn(repo, 'createQueryBuilder').mockResolvedValueOnce(testBikes);
+    jest.spyOn(repo, 'find').mockResolvedValueOnce(testBikes);
     return request(app.getHttpServer())
       .get('/bikes')
       .expect(200)
@@ -62,7 +62,7 @@ describe('BikesController (e2e)', () => {
 
   it('GET /bikes/{licensePlateNumber}', async () => {
     const testData = testBikes[1];
-    jest.spyOn(service, 'findOne').mockResolvedValueOnce(testData);
+    jest.spyOn(repo, 'findOne').mockResolvedValueOnce(testData);
     return request(app.getHttpServer())
       .get(`/bikes/${testData.licensePlateNumber}`)
       .expect(200)
@@ -70,7 +70,7 @@ describe('BikesController (e2e)', () => {
   });
 
   it('GET Not Found /bikes/{licensePlateNumber}', async () => {
-    jest.spyOn(service, 'findOne').mockResolvedValueOnce(undefined);
+    jest.spyOn(repo, 'findOne').mockResolvedValueOnce(undefined);
     return request(app.getHttpServer())
       .get('/bikes/not-exist')
       .expect(404)
@@ -85,7 +85,7 @@ describe('BikesController (e2e)', () => {
       isActive: false
     };
 
-    jest.spyOn(service, 'create').mockResolvedValueOnce(params);
+    jest.spyOn(repo, 'save').mockResolvedValueOnce(params);
     return request(app.getHttpServer())
       .post('/bikes')
       .set('Accept', 'application/json')
@@ -110,13 +110,6 @@ describe('BikesController (e2e)', () => {
   });
 
   it('PUT /bikes/{licensePlateNumber}', async () => {
-    const originBike: Bike = {
-      licensePlateNumber: 'AQV-1235',
-      mileage: 100.00,
-      brand: 'S',
-      isActive: false
-    };
-
     const params: UpdateBikeDto = {
       mileage: 199.99,
       isActive: true
@@ -129,10 +122,10 @@ describe('BikesController (e2e)', () => {
       isActive: true
     };
 
-    jest.spyOn(repo, 'findOne').mockResolvedValue(updatedBike);
-    jest.spyOn(repo, 'update').mockImplementation();
+    jest.spyOn(repo, 'update').mockResolvedValueOnce(new UpdateResult());
+    jest.spyOn(repo, 'findOne').mockResolvedValueOnce(updatedBike);
     return request(app.getHttpServer())
-      .put(`/bikes/${originBike.licensePlateNumber}`)
+      .put(`/bikes/${updatedBike.licensePlateNumber}`)
       .set('Accept', 'application/json')
       .send(params)
       .expect(200)

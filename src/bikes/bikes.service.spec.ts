@@ -52,6 +52,15 @@ describe('BikesService', () => {
       expect(await service.findAll({})).toBe(testBikes);
     });
 
+    it('findAll with query: should return filtered array of bikes', async () => {
+      const filteredBikes = testBikes.filter(bike => bike.mileage < 150);
+      const query = {
+        mileage_lt: 150
+      };
+      jest.spyOn(repo, 'find').mockResolvedValueOnce(filteredBikes);
+      expect(await service.findAll(query)).toBe(filteredBikes);
+    });
+
     it('findOne: should return a bike', async () => {
       jest.spyOn(repo, 'findOne').mockResolvedValueOnce(testBikes[0]);
       expect(await service.findOne('AAA-111')).toBe(testBikes[0]);
@@ -64,7 +73,7 @@ describe('BikesService', () => {
         brand: 'test',
         isActive: false
       };
-      jest.spyOn(repo, 'save').mockResolvedValue(params);
+      jest.spyOn(repo, 'save').mockResolvedValueOnce(params);
       expect(await service.create(params)).toBe(params);
     });
 
@@ -81,8 +90,8 @@ describe('BikesService', () => {
         isActive: true
       };
 
-      jest.spyOn(repo, 'update').mockResolvedValue(new UpdateResult());
-      jest.spyOn(repo, 'findOne').mockResolvedValue(updatedBike);
+      jest.spyOn(repo, 'update').mockResolvedValueOnce(new UpdateResult());
+      jest.spyOn(repo, 'findOne').mockResolvedValueOnce(updatedBike);
       expect(await service.update(updatedBike.licensePlateNumber, params)).toBe(updatedBike);
     });
   });
