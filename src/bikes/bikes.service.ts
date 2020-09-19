@@ -38,8 +38,6 @@ export class BikesService {
       findCondition['isActive'] = Equal(boolActive);
     }
 
-    console.log(findCondition);
-
     return this.bikeRepository.find(findCondition);
   }
 
