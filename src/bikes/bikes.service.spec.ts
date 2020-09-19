@@ -69,13 +69,6 @@ describe('BikesService', () => {
     });
 
     it('update: should return a updated bike', async () => {
-      const originBike: Bike = {
-        licensePlateNumber: 'AQV-1235',
-        mileage: 100.00,
-        brand: 'S',
-        isActive: false
-      };
-
       const params: UpdateBikeDto = {
         mileage: 199.99,
         isActive: true
@@ -90,7 +83,7 @@ describe('BikesService', () => {
 
       jest.spyOn(repo, 'update').mockResolvedValue(new UpdateResult());
       jest.spyOn(repo, 'findOne').mockResolvedValue(updatedBike);
-      expect(await service.update(originBike.licensePlateNumber, params)).toBe(updatedBike);
+      expect(await service.update(updatedBike.licensePlateNumber, params)).toBe(updatedBike);
     });
   });
 });
